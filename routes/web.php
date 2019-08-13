@@ -14,3 +14,12 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Auth::routes();
+
+Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
+    Route::get('/emails', 'EmailController@index')->name('home');
+    Route::view('/emails/create', 'admin.emails.create')->name('emails.create');
+});
+
+
