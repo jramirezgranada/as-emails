@@ -91,7 +91,10 @@ class CreateEmail extends Component {
         return (
             <div className="container">
                 <div className="row justify-content-center">
-                    <div className="col-md-8">
+                    <div className="col-md-2">
+                        <a href="/admin/emails" className="btn btn-primary">Go to Inbox</a>
+                    </div>
+                    <div className="col-md-10">
                         {this.state.success ?
                             <div className="alert alert-success">The Email was stored.</div>
                             : null}

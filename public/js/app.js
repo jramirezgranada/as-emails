@@ -89211,7 +89211,12 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row justify-content-center"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-8"
+        className: "col-md-2"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+        href: "/admin/emails",
+        className: "btn btn-primary"
+      }, "Go to Inbox")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-md-10"
       }, this.state.success ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "alert alert-success"
       }, "The Email was stored.") : null, this.state.errors ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
