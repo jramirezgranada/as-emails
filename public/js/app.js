@@ -89111,12 +89111,6 @@ function (_Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(CreateEmail).call(this, props));
 
-    _defineProperty(_assertThisInitialized(_this), "onChange", function (editorState) {
-      _this.setState({
-        editorState: editorState
-      });
-    });
-
     _defineProperty(_assertThisInitialized(_this), "handleKeyCommand", function (command) {
       var newState = draft_js__WEBPACK_IMPORTED_MODULE_2__["RichUtils"].handleKeyCommand(_this.state.editorState, command);
 
@@ -89141,8 +89135,70 @@ function (_Component) {
       _this.onChange(draft_js__WEBPACK_IMPORTED_MODULE_2__["RichUtils"].toggleInlineStyle(_this.state.editorState, "ITALIC"));
     });
 
+    _defineProperty(_assertThisInitialized(_this), "handleSubjectChange", function (e) {
+      _this.setState({
+        subject: e.target.value
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "handleBodyChange", function (e) {
+      _this.setState({
+        body: e.target.value
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "onChange", function (editorState) {
+      _this.setState({
+        editorState: editorState
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "submitForm", function () {
+      var subject = _this.state.subject;
+
+      var contentState = _this.state.editorState.getCurrentContent();
+
+      var body = {
+        bodyContent: Object(draft_js__WEBPACK_IMPORTED_MODULE_2__["convertToRaw"])(contentState)
+      };
+      body = body.bodyContent.blocks[0].text == '' ? '' : JSON.stringify(body.bodyContent);
+      fetch('/api/admin/emails/create', {
+        method: 'post',
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({
+          subject: subject,
+          body: body
+        })
+      }).then(function (response) {
+        return response.json();
+      }).then(function (data) {
+        if (data.errors) {
+          var errorItems = Object.keys(data.errors).map(function (key, i) {
+            var error = data.errors[key][0];
+            return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, error);
+          });
+
+          _this.setState({
+            errors: true,
+            success: false,
+            errorItems: errorItems
+          });
+        } else {
+          _this.setState({
+            errors: false,
+            success: true
+          });
+        }
+      });
+    });
+
     _this.state = {
-      editorState: draft_js__WEBPACK_IMPORTED_MODULE_2__["EditorState"].createEmpty()
+      editorState: draft_js__WEBPACK_IMPORTED_MODULE_2__["EditorState"].createEmpty(),
+      subject: '',
+      body: ''
     };
     return _this;
   }
@@ -89156,7 +89212,11 @@ function (_Component) {
         className: "row justify-content-center"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-md-8"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, this.state.success ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "alert alert-success"
+      }, "The Email was stored.") : null, this.state.errors ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "alert alert-danger"
+      }, this.state.errorItems) : null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "card"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "card-header"
@@ -89166,7 +89226,10 @@ function (_Component) {
         htmlFor: ""
       }, "Subject"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         type: "text",
-        className: "form-control"
+        className: "form-control",
+        name: "subject",
+        id: "subject",
+        onChange: this.handleSubjectChange
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "editorContainer"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
@@ -89181,11 +89244,11 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(draft_js__WEBPACK_IMPORTED_MODULE_2__["Editor"], {
         editorState: this.state.editorState,
         handleKeyCommand: this.handleKeyCommand,
-        onChange: this.onChange,
-        placeHolder: "Write your Email here ... "
+        onChange: this.onChange
       }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         type: "button",
-        className: "btn badge-primary"
+        className: "btn badge-primary",
+        onClick: this.submitForm
       }, "Send Email"))))));
     }
   }]);

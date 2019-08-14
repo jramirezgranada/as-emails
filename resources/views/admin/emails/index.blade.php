@@ -24,7 +24,7 @@
                                 @foreach($emails as $email)
                                     <tr>
                                         <td>{{ $email->subject }}</td>
-                                        <td>{{ substr($email->body, 0, 60) }} ...</td>
+                                        <td>{{ substr(json_decode($email->body)->blocks[0]->text, 0, 60) }} ...</td>
                                         <td>
                                             <span class="badge badge-{{ ($email->is_read) ? 'success' : 'warning' }}">{{ ($email->is_read) ? 'Read' : 'Unread' }}</span>
                                         </td>
