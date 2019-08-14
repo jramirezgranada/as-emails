@@ -86,8 +86,8 @@
         <h1>AS - Code Challenge</h1>
 
         <div class="links">
-            <a href="https://laravel.com/docs">Git Repository</a>
-            <a href="https://laracasts.com">Demo OnLine</a>
+            <a href="https://github.com/jramirezgranada/as-emails" target="_blank">Git Repository</a>
+            <a href="http://as.jramirezgranada.com" target="_blank">Demo OnLine</a>
         </div>
     </div>
 </div>
